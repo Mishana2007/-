@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NFT Roulette</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+      color: #ffffff;
+      overflow: hidden;
+      margin: 0;
+    }
+    .slot-machine {
+      display: flex;
+      background: linear-gradient(#333, #222);
+      padding: 15px;
+      border: 4px solid #ff4444;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 68, 68, 0.7), inset 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    .reel {
+      width: 90px;
+      height: 90px;
+      margin: 0 8px;
+      overflow: hidden;
+      background: linear-gradient(#444, #333);
+      border-radius: 8px;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+    .reel-strip {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      width: 100%;
+    }
+    .symbol {
+      font-size: 3rem;
+      line-height: 90px;
+      text-align: center;
+      width: 100%;
+      height: 90px;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    }
+    @keyframes spin {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-540px); }
+    }
+    .spinning {
+      animation: spin 0.15s linear infinite;
+    }
+    .stopping {
+      animation: none;
+      transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    .shake {
+      animation: shake 0.3s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(-4px); }
+    }
+    .neon-text {
+      text-shadow: 0 0 5px #ff4444, 0 0 10px #ff4444, 0 0 20px #ff4444;
+    }
+    .neon-border {
+      box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+    }
+    .nav-button {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(#444, #333);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 6px;
+      transition: all 0.3s;
+      box-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
+      font-size: 0.75rem;
+      line-height: 1rem;
+      text-align: center;
+      padding: 4px;
+    }
+    .nav-button:hover, .nav-button:active {
+      box-shadow: 0 0 12px rgba(255, 68, 68, 0.8);
+      transform: scale(0.95);
+    }
+    .banner {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(#333, #222);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.7;
+    }
+    .banner-text {
+      position: absolute;
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-shadow: 0 0 10px #ff4444, 0 0 20px #ff4444, 0 0 30px #ff4444;
+    }
+    @media (max-width: 640px) {
+      .reel {
+        width: 70px;
+        height: 70px;
+        margin: 0 5px;
+      }
+      .symbol {
+        font-size: 2.5rem;
+        line-height: 70px;
+        height: 70px;
+      }
+      .slot-machine {
+        padding: 10px;
+      }
+      .neon-text {
+        font-size: 2rem;
+      }
+      .nav-button {
+        width: 48px;
+        height: 48px;
+        margin: 0 4px;
+        font-size: 0.65rem;
+        line-height: 0.9rem;
+      }
+      .banner {
+        height: 150px;
+      }
+      .banner-text {
+        font-size: 1.8rem;
+      }
+      .balance {
+        font-size: 0.9rem;
+      }
+      .top-up-btn {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+      }
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-between min-h-screen">
+  <!-- Loading Screen -->
+  <div id="loading" class="flex flex-col items-center justify-center min-h-screen">
+    <h1 class="text-4xl sm:text-5xl font-bold neon-text mb-10">NFT Roulette</h1>
+    <div class="slot-machine">
+      <div class="reel" id="reel1">
+        <div class="reel-strip">
+          <div class="symbol">🍋</div>
+          <div class="symbol">🍒</div>
+          <div class="symbol">🍊</div>
+          <div class="symbol">🔔</div>
+          <div class="symbol">⭐</div>
+          <div class="symbol">7</div>
+        </div>
+      </div>
+      <div class="reel" id="reel2">
+        <div class="reel-strip">
+          <div class="symbol">🍋</div>
+          <div class="symbol">🍒</div>
+          <div class="symbol">🍊</div>
+          <div class="symbol">🔔</div>
+          <div class="symbol">⭐</div>
+          <div class="symbol">7</div>
+        </div>
+      </div>
+      <div class="reel" id="reel3">
+        <div class="reel-strip">
+          <div class="symbol">🍋</div>
+          <div class="symbol">🍒</div>
+          <div class="symbol">🍊</div>
+          <div class="symbol">🔔</div>
+          <div class="symbol">⭐</div>
+          <div class="symbol">7</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Screen -->
+  <div id="main-screen" class="hidden flex flex-col items-center justify-between min-h-screen w-full relative">
+    <!-- Balance Display -->
+    <div class="absolute top-4 left-4 text-lg sm:text-xl neon-text balance">
+      Баланс: 100 ⭐
+    </div>
+    <!-- Top Up Button -->
+    <button id="top-up-btn" class="absolute top-4 right-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg neon-border transition duration-300 text-sm sm:text-base top-up-btn">
+      Пополнить 💳
+    </button>
+    <!-- Promotional Banner -->
+    <div class="banner">
+      <img src="https://via.placeholder.com/600x200" alt="Promo Banner">
+      <div class="banner-text neon-text">NFT Roulette</div>
+    </div>
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 flex justify-center bg-[#1a1a1a] p-3">
+      <button id="roulette-btn" class="nav-button">
+        <span>🎰</span>
+        <span>Рулетка</span>
+      </button>
+      <button id="tokens-btn" class="nav-button">
+        <span>💰</span>
+        <span>Токены</span>
+      </button>
+      <button id="profile-btn" class="nav-button">
+        <span>👤</span>
+        <span>Профиль</span>
+      </button>
+      <button id="referrals-btn" class="nav-button">
+        <span>🤝</span>
+        <span>Рефералы</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Symbols for slot machine
+    const symbols = ['🍋', '🍒', '🍊', '🔔', '⭐', '7'];
+
+    // Set random symbols
+    function setRandomSymbols(reelId) {
+      const reel = document.getElementById(reelId).querySelector('.reel-strip');
+      const symbolElements = reel.querySelectorAll('.symbol');
+      symbolElements.forEach((el, idx) => {
+        el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      });
+    }
+
+    // Animate reels
+    const reels = ['reel1', 'reel2', 'reel3'];
+    reels.forEach((reelId, index) => {
+      const reel = document.getElementById(reelId).querySelector('.reel-strip');
+      reel.classList.add('spinning');
+      const intervalId = setInterval(() => setRandomSymbols(reelId), 100);
+      setTimeout(() => {
+        clearInterval(intervalId);
+        reel.classList.remove('spinning');
+        reel.classList.add('stopping', 'shake');
+        const symbolElements = reel.querySelectorAll('.symbol');
+        symbolElements.forEach(el => el.textContent = '7');
+        reel.style.transform = 'translateY(0)';
+      }, 2500 + index * 200);
+    });
+
+    // Transition to main screen
+    setTimeout(() => {
+      document.getElementById('loading').classList.add('hidden');
+      document.getElementById('main-screen').classList.remove('hidden');
+    }, 4000);
+
+    // Telegram Web App integration
+    if (window.Telegram?.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+  </script>
+</body>
+</html>
