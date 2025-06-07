@@ -12,6 +12,8 @@
       color: #ffffff;
       overflow: hidden;
       margin: 0;
+      height: 100vh;
+      position: relative;
     }
     .slot-machine {
       display: flex;
@@ -19,7 +21,7 @@
       padding: 15px;
       border: 4px solid #ff4444;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255, 68, 68, 0.7), inset 0 0 10px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), inset 0 0 10px rgba(0, 0, 0, 0.5);
     }
     .reel {
       width: 90px;
@@ -43,7 +45,7 @@
       text-align: center;
       width: 100%;
       height: 90px;
-      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
     }
     @keyframes spin {
       0% { transform: translateY(0); }
@@ -64,38 +66,53 @@
       50% { transform: translateX(-4px); }
     }
     .neon-text {
-      text-shadow: 0 0 5px #ff4444, 0 0 10px #ff4444, 0 0 20px #ff4444;
+      text-shadow: 0 0 5px #ff4444, 0 0 10px #ff4444, 0 0 20px rgba(255, 255, 255, 0.8);
     }
     .neon-border {
-      box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+      box-shadow: 0 0 10px #00ff00, 0 0 20px rgba(255, 255, 255, 0.8);
+    }
+    .top-up-btn {
+      background: linear-gradient(135deg, #1e90ff, #4169e1);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+    .top-up-btn:hover {
+      background: linear-gradient(135deg, #4169e1, #1e90ff);
+      box-shadow: 0 0 15px rgba(30, 144, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.9);
     }
     .nav-button {
       width: 60px;
-      height: 60px;
-      background: linear-gradient(#444, #333);
-      border-radius: 10px;
+      height: 80px;
+      background: #000000;
+      border-radius: 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin: 0 6px;
+      margin: 0 12px; /* Increased spacing */
       transition: all 0.3s;
-      box-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
-      font-size: 0.75rem;
-      line-height: 1rem;
-      text-align: center;
-      padding: 4px;
+      font-size: 1.5rem;
+      color: #ffffff;
     }
-    .nav-button:hover, .nav-button:active {
-      box-shadow: 0 0 12px rgba(255, 68, 68, 0.8);
-      transform: scale(0.95);
+    .nav-button.active, .nav-button:hover {
+      border-bottom: 3px solid #ffffff;
+      color: #d3d3d3;
+    }
+    .nav-button span.label {
+      font-size: 0.7rem;
+      text-align: center;
+      margin-top: 4px;
     }
     .banner {
       position: relative;
-      width: 100%;
-      height: 200px;
+      width: 75%;
+      max-width: 400px;
+      height: 180px;
       background: linear-gradient(#333, #222);
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+      border-radius: 16px;
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.9), 0 0 60px rgba(255, 255, 255, 0.7);
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -103,16 +120,79 @@
       text-align: center;
     }
     .banner img {
-      width: 100%;
-      height: 100%;
+      width: calc(100% - 8px);
+      height: calc(100% - 8px);
       object-fit: cover;
       opacity: 0.7;
+      border: 2px dashed #ffffff;
+      border-radius: 12px;
+      margin: 4px;
     }
     .banner-text {
       position: absolute;
       font-size: 2.5rem;
       font-weight: bold;
-      text-shadow: 0 0 10px #ff4444, 0 0 20px #ff4444, 0 0 30px #ff4444;
+      text-shadow: 0 0 10px #ff4444, 0 0 20px rgba(255, 255, 255, 0.9), 0 0 30px rgba(255, 255, 255, 0.9);
+    }
+    .profile-section {
+      position: absolute;
+      top: 40%; /* Slightly above center */
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      display: none;
+    }
+    .profile-section img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    .profile-section p {
+      font-size: 1.2rem;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+      margin: 5px 0;
+    }
+    .leaders-balance {
+      position: absolute;
+      top: 70%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      max-width: 400px;
+      height: 100px;
+      background: linear-gradient(#333, #222);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+      text-align: center;
+      padding: 10px;
+      font-size: 1.5rem;
+      color: #d3d3d3;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+    }
+    .neon-line {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 2px;
+      background: none;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.3), 0 0 20px rgba(255, 0, 0, 0.2);
+    }
+    .main-content {
+      width: 100%;
+      min-height: calc(100vh - 80px);
+      padding-bottom: 80px;
+      transition: all 0.3s ease;
+    }
+    #nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      display: none;
     }
     @media (max-width: 640px) {
       .reel {
@@ -133,16 +213,23 @@
       }
       .nav-button {
         width: 48px;
-        height: 48px;
-        margin: 0 4px;
-        font-size: 0.65rem;
-        line-height: 0.9rem;
+        height: 64px;
+        margin: 0 10px;
+        font-size: 1.2rem;
+      }
+      .nav-button span.label {
+        font-size: 0.6rem;
       }
       .banner {
-        height: 150px;
+        width: 85%;
+        height: 135px;
       }
       .banner-text {
         font-size: 1.8rem;
+      }
+      .banner img {
+        border-width: 1px;
+        margin: 3px;
       }
       .balance {
         font-size: 0.9rem;
@@ -150,6 +237,28 @@
       .top-up-btn {
         font-size: 0.8rem;
         padding: 6px 12px;
+      }
+      .profile-section {
+        top: 40%;
+      }
+      .profile-section img {
+        width: 80px;
+        height: 80px;
+      }
+      .profile-section p {
+        font-size: 1rem;
+      }
+      .leaders-balance {
+        top: 75%;
+        height: 80px;
+        font-size: 1.2rem;
+      }
+      .neon-line {
+        top: 65%;
+      }
+      .main-content {
+        min-height: calc(100vh - 64px);
+        padding-bottom: 64px;
       }
     }
   </style>
@@ -193,39 +302,50 @@
   </div>
 
   <!-- Main Screen -->
-  <div id="main-screen" class="hidden flex flex-col items-center justify-between min-h-screen w-full relative">
-    <!-- Balance Display -->
-    <div class="absolute top-4 left-4 text-lg sm:text-xl neon-text balance">
-      Баланс: 100 ⭐
-    </div>
-    <!-- Top Up Button -->
-    <button id="top-up-btn" class="absolute top-4 right-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg neon-border transition duration-300 text-sm sm:text-base top-up-btn">
-      Пополнить 💳
-    </button>
-    <!-- Promotional Banner -->
-    <div class="banner">
-      <img src="https://via.placeholder.com/600x200" alt="Promo Banner">
-      <div class="banner-text neon-text">NFT Roulette</div>
+  <div id="main-screen" class="hidden flex flex-col items-center w-full relative">
+    <div class="main-content">
+      <!-- Balance Display -->
+      <div class="absolute top-4 left-4 text-lg sm:text-xl neon-text balance">
+        Баланс: 100 ⭐
+      </div>
+      <!-- Top Up Button -->
+      <button id="top-up-btn" class="absolute top-4 right-4 top-up-btn neon-border">
+        Пополнить ➕
+      </button>
+      <!-- Promotional Banner -->
+      <div class="banner mt-16">
+        <img src="https://via.placeholder.com/400x180" alt="Promo Banner">
+        <div class="banner-text neon-text">NFT Roulette</div>
+      </div>
     </div>
     <!-- Bottom Navigation -->
-    <div class="fixed bottom-0 left-0 right-0 flex justify-center bg-[#1a1a1a] p-3">
+    <div id="nav-bar" class="flex justify-around bg-[#000000] p-2">
       <button id="roulette-btn" class="nav-button">
-        <span>🎰</span>
-        <span>Рулетка</span>
+        <span class="emoji">🎰</span>
+        <span class="label">Рулетка</span>
       </button>
       <button id="tokens-btn" class="nav-button">
-        <span>💰</span>
-        <span>Токены</span>
+        <span class="emoji">💰</span>
+        <span class="label">Токены</span>
       </button>
       <button id="profile-btn" class="nav-button">
-        <span>👤</span>
-        <span>Профиль</span>
+        <span class="emoji">👤</span>
+        <span class="label">Профиль</span>
       </button>
       <button id="referrals-btn" class="nav-button">
-        <span>🤝</span>
-        <span>Рефералы</span>
+        <span class="emoji">🤝</span>
+        <span class="label">Рефералы</span>
       </button>
     </div>
+  </div>
+
+  <!-- Profile Section -->
+  <div id="profile-section" class="profile-section">
+    <img id="profile-avatar" src="" alt="Avatar">
+    <p id="profile-username"></p>
+    <p id="profile-userid"></p>
+    <div class="neon-line"></div>
+    <div class="leaders-balance">Баланс лидеров</div>
   </div>
 
   <script>
@@ -257,11 +377,40 @@
       }, 2500 + index * 200);
     });
 
-    // Transition to main screen
+    // Transition to main screen and show nav bar
     setTimeout(() => {
       document.getElementById('loading').classList.add('hidden');
       document.getElementById('main-screen').classList.remove('hidden');
+      document.getElementById('nav-bar').style.display = 'flex';
     }, 4000);
+
+    // Handle profile button click
+    document.getElementById('profile-btn').addEventListener('click', () => {
+      document.querySelector('.main-content').style.display = 'none';
+      document.getElementById('profile-section').style.display = 'block';
+
+      // Get Telegram user data from initData
+      const initData = window.Telegram?.WebApp.initData || '';
+      const urlParams = new URLSearchParams(initData);
+      const user = JSON.parse(decodeURIComponent(urlParams.get('user') || '{}'));
+
+      if (user) {
+        const avatarUrl = user.photo_url || 'https://via.placeholder.com/100';
+        const username = user.username || 'Unknown User';
+        const userId = user.id || 'Unknown ID';
+        document.getElementById('profile-avatar').src = avatarUrl;
+        document.getElementById('profile-username').textContent = username;
+        document.getElementById('profile-userid').textContent = `ID: ${userId}`;
+      }
+    });
+
+    // Handle back to main screen from any other button
+    ['roulette-btn', 'tokens-btn', 'referrals-btn'].forEach(id => {
+      document.getElementById(id).addEventListener('click', () => {
+        document.querySelector('.main-content').style.display = 'block';
+        document.getElementById('profile-section').style.display = 'none';
+      });
+    });
 
     // Telegram Web App integration
     if (window.Telegram?.WebApp) {
