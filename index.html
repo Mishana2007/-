@@ -113,7 +113,7 @@
       transform: translate(-50%, -50%);
       width: 90%;
       max-width: none;
-      height: 180px;
+      height: 360px;
       background: linear-gradient(45deg, #222, #444);
       border-radius: 16px;
       box-shadow: 
@@ -136,12 +136,12 @@
         inset 0 0 30px rgba(255, 255, 255, 0.4);
     }
     .banner img {
-      width: calc(100% - 8px);
-      height: calc(100% - 8px);
+      width: calc(200% - 16px);
+      height: calc(200% - 16px);
       object-fit: cover;
       opacity: 0.7;
       border-radius: 12px;
-      margin: 4px;
+      margin: 8px;
     }
     .banner-text {
       position: absolute;
@@ -298,7 +298,7 @@
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
     .spin-btn {
-      margin-top: 20px;
+      margin-top: 40px;
       background: linear-gradient(135deg, #00ff00, #00cc00);
       border-radius: 12px;
       padding: 12px 24px;
@@ -359,21 +359,14 @@
       }
       .banner {
         width: 92%;
-        height: 135px;
+        height: 270px;
       }
       .banner-text {
         font-size: 1.8rem;
       }
       .banner img {
         border-width: 1px;
-        margin: 3px;
-      }
-      .balance {
-        font-size: 0.9rem;
-      }
-      .top-up-btn {
-        font-size: 0.8rem;
-        padding: 6px 12px;
+        margin: 6px;
       }
       .profile-section {
         top: 55%;
@@ -415,6 +408,7 @@
         margin: 0 5px;
       }
       .spin-btn {
+        margin-top: 30px;
         font-size: 1rem;
         padding: 8px 16px;
       }
@@ -476,7 +470,7 @@
       </button>
       <!-- Promotional Banner -->
       <div id="promo-banner" class="banner">
-        <img src="https://via.placeholder.com/400x180" alt="Promo Banner">
+        <img src="https://via.placeholder.com/800x360" alt="Promo Banner">
         <div class="banner-text neon-text">NFT Roulette</div>
       </div>
     </div>
@@ -553,11 +547,6 @@
         </tbody>
       </table>
     </div>
-    <!-- Additional Buttons -->
-    <div class="mt-4">
-      <button id="profile-top-up-btn" class="top-up-btn neon-border mr-2">Пополнить ➕</button>
-      <div class="inline-block text-lg sm:text-xl neon-text balance">Баланс: 100 ⭐</div>
-    </div>
   </div>
   <!-- In Development Section -->
   <div id="token-section" class="hidden flex flex-col items-center justify-center min-h-screen">
@@ -630,6 +619,7 @@
     document.getElementById('profile-btn').addEventListener('click', () => {
       document.querySelector('.main-content').style.display = 'none';
       document.getElementById('profile-section').style.display = 'block';
+      document.getElementById('nav-bar').style.display = 'flex';
       document.getElementById('token-section').classList.add('hidden');
 
       // Get Telegram user data from initData
@@ -706,11 +696,8 @@
       });
     });
 
-    // Handle top-up buttons
+    // Handle top-up button
     document.getElementById('top-up-btn').addEventListener('click', () => {
-      alert('Пополнение баланса');
-    });
-    document.getElementById('profile-top-up-btn').addEventListener('click', () => {
       alert('Пополнение баланса');
     });
 
