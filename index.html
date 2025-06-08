@@ -108,11 +108,11 @@
     }
     .banner {
       position: absolute;
-      top: 50%;
+      top: 45%;
       left: 50%;
-      transform: translate(-50%, -50%) rotateY(20deg);
-      width: 75%;
-      max-width: 400px;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: none;
       height: 180px;
       background: linear-gradient(45deg, #222, #444);
       border-radius: 16px;
@@ -126,6 +126,7 @@
       justify-content: center;
       text-align: center;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
     }
     .banner:hover {
       transform: translate(-50%, -50%) rotateY(30deg);
@@ -151,7 +152,7 @@
     }
     .profile-section {
       position: absolute;
-      top: 40%;
+      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
@@ -166,8 +167,10 @@
       width: 100px;
       height: 100px;
       border-radius: 50%;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      margin-left: auto;
+      margin-right: auto;
     }
     .profile-header p {
       font-size: 1.2rem;
@@ -211,11 +214,11 @@
       border-bottom: 1px solid rgba(255, 68, 68, 0.3);
     }
     .user-row {
-      background: rgba(255, 215, 0, 0.2); /* Подсветка строки пользователя */
+      background: rgba(255, 215, 0, 0.2);
       font-weight: bold;
     }
     .user-row.top-3 {
-      background: rgba(255, 68, 68, 0.3); /* Усиленная подсветка для топ-3 */
+      background: rgba(255, 68, 68, 0.3);
       color: #ff4444;
     }
     .neon-line {
@@ -241,6 +244,92 @@
       right: 0;
       z-index: 10;
       display: none;
+    }
+    .in-development {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: 2rem;
+      color: #ff4444;
+      text-shadow: 0 0 10px #ff0000, 0 0 20px rgba(255, 0, 0, 0.7);
+      display: none;
+    }
+    .roulette-screen {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+      z-index: 20;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .prize-container {
+      width: 90%;
+      height: 150px;
+      overflow: hidden;
+      position: relative;
+    }
+    .prize-track {
+      display: flex;
+      position: absolute;
+      animation: slide 20s linear infinite;
+    }
+    @keyframes slide {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    .prize {
+      width: 100px;
+      height: 100px;
+      background: #333;
+      border: 2px solid #ff4444;
+      margin: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      text-shadow: 0 0 5px #ffffff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+    .spin-btn {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #00ff00, #00cc00);
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-size: 1.3rem;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-shadow: 0 0 5px #00ff00;
+    }
+    .spin-btn:hover {
+      background: linear-gradient(135deg, #00cc00, #009900);
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
+    }
+    .back-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: linear-gradient(135deg, #ff4444, #cc0000);
+      border: none;
+      border-radius: 12px;
+      padding: 8px 16px;
+      font-size: 1.1rem;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-shadow: 0 0 5px #ff4444;
+    }
+    .back-btn:hover {
+      background: linear-gradient(135deg, #cc0000, #990000);
+      box-shadow: 0 0 20px rgba(255, 68, 68, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
     }
     @media (max-width: 640px) {
       .reel {
@@ -269,9 +358,8 @@
         font-size: 0.6rem;
       }
       .banner {
-        width: 85%;
+        width: 92%;
         height: 135px;
-        max-width: 300px;
       }
       .banner-text {
         font-size: 1.8rem;
@@ -288,11 +376,14 @@
         padding: 6px 12px;
       }
       .profile-section {
-        top: 40%;
+        top: 55%;
       }
       .profile-header img {
         width: 80px;
         height: 80px;
+        margin-bottom: 15px;
+        margin-left: auto;
+        margin-right: auto;
       }
       .profile-header p {
         font-size: 1rem;
@@ -310,6 +401,26 @@
       .main-content {
         min-height: calc(100vh - 64px);
         padding-bottom: 64px;
+      }
+      .in-development {
+        font-size: 1.5rem;
+      }
+      .prize-container {
+        height: 100px;
+      }
+      .prize {
+        width: 70px;
+        height: 70px;
+        font-size: 0.9rem;
+        margin: 0 5px;
+      }
+      .spin-btn {
+        font-size: 1rem;
+        padding: 8px 16px;
+      }
+      .back-btn {
+        font-size: 0.9rem;
+        padding: 6px 12px;
       }
     }
   </style>
@@ -364,7 +475,7 @@
         Пополнить ➕
       </button>
       <!-- Promotional Banner -->
-      <div class="banner">
+      <div id="promo-banner" class="banner">
         <img src="https://via.placeholder.com/400x180" alt="Promo Banner">
         <div class="banner-text neon-text">NFT Roulette</div>
       </div>
@@ -375,9 +486,9 @@
         <span class="emoji">🎰</span>
         <span class="label">Рулетка</span>
       </button>
-      <button id="tokens-btn" class="nav-button">
+      <button id="token-btn" class="nav-button">
         <span class="emoji">💰</span>
-        <span class="label">Токены</span>
+        <span class="label">Токен</span>
       </button>
       <button id="profile-btn" class="nav-button">
         <span class="emoji">👤</span>
@@ -442,6 +553,41 @@
         </tbody>
       </table>
     </div>
+    <!-- Additional Buttons -->
+    <div class="mt-4">
+      <button id="profile-top-up-btn" class="top-up-btn neon-border mr-2">Пополнить ➕</button>
+      <div class="inline-block text-lg sm:text-xl neon-text balance">Баланс: 100 ⭐</div>
+    </div>
+  </div>
+  <!-- In Development Section -->
+  <div id="token-section" class="hidden flex flex-col items-center justify-center min-h-screen">
+    <div class="in-development">В разработке</div>
+    <div id="token-nav-bar" class="flex justify-around bg-[#000000] p-2 fixed bottom-0 left-0 right-0 z-10"></div>
+  </div>
+  <!-- Roulette Screen -->
+  <div id="roulette-screen" class="roulette-screen">
+    <button id="back-btn" class="back-btn">Назад</button>
+    <div class="prize-container">
+      <div class="prize-track">
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+        <div class="prize"></div>
+      </div>
+    </div>
+    <button id="spin-btn" class="spin-btn">Раскрутить бесплатно</button>
   </div>
 
   <script>
@@ -484,6 +630,7 @@
     document.getElementById('profile-btn').addEventListener('click', () => {
       document.querySelector('.main-content').style.display = 'none';
       document.getElementById('profile-section').style.display = 'block';
+      document.getElementById('token-section').classList.add('hidden');
 
       // Get Telegram user data from initData
       const initData = window.Telegram?.WebApp.initData || '';
@@ -503,9 +650,9 @@
         document.getElementById('user-rank').classList.remove('top-3');
         document.getElementById('user-rank').textContent = '';
 
-        // Mock user rank (replace with real data logic later)
+        // Mock user rank
         const leadersList = document.getElementById('leaders-list').getElementsByTagName('tr');
-        let userRank = 'Вы на 36 месте'; // Default rank outside top-30
+        let userRank = 'Вы на 36 месте';
         for (let i = 0; i < leadersList.length && i < 30; i++) {
           const nick = leadersList[i].cells[1].textContent;
           if (nick === username) {
@@ -522,15 +669,74 @@
       }
     });
 
-    // Handle back to main screen from any other button
-    ['roulette-btn', 'tokens-btn', 'referrals-btn'].forEach(id => {
+    // Handle token button click
+    document.getElementById('token-btn').addEventListener('click', () => {
+      document.querySelector('.main-content').style.display = 'none';
+      document.getElementById('profile-section').style.display = 'none';
+      document.getElementById('token-section').classList.remove('hidden');
+      const tokenNavBar = document.getElementById('token-nav-bar');
+      tokenNavBar.innerHTML = document.getElementById('nav-bar').innerHTML;
+      document.querySelector('.in-development').style.display = 'block';
+
+      // Add event listeners to dynamically created buttons
+      const tokenButtons = tokenNavBar.querySelectorAll('.nav-button');
+      tokenButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          const buttonId = button.id;
+          document.querySelector('.main-content').style.display = 'block';
+          document.getElementById('profile-section').style.display = 'none';
+          document.getElementById('token-section').classList.add('hidden');
+          document.querySelector('.in-development').style.display = 'none';
+          if (buttonId === 'profile-btn') {
+            document.getElementById('profile-btn').click();
+          } else if (buttonId === 'roulette-btn') {
+            // No additional action needed, main screen is already shown
+          }
+        });
+      });
+    });
+
+    // Handle back to main screen from other buttons
+    ['roulette-btn', 'referrals-btn'].forEach(id => {
       document.getElementById(id).addEventListener('click', () => {
         document.querySelector('.main-content').style.display = 'block';
         document.getElementById('profile-section').style.display = 'none';
-        document.querySelectorAll('.user-row').forEach(row => row.classList.remove('user-row', 'top-3'));
-        document.getElementById('user-rank').classList.remove('top-3');
+        document.getElementById('token-section').classList.add('hidden');
+        document.querySelector('.in-development').style.display = 'none';
       });
     });
+
+    // Handle top-up buttons
+    document.getElementById('top-up-btn').addEventListener('click', () => {
+      alert('Пополнение баланса');
+    });
+    document.getElementById('profile-top-up-btn').addEventListener('click', () => {
+      alert('Пополнение баланса');
+    });
+
+    // Handle banner click to show roulette screen
+    document.getElementById('promo-banner').addEventListener('click', () => {
+      document.getElementById('main-screen').style.display = 'none';
+      document.getElementById('profile-section').style.display = 'none';
+      document.getElementById('token-section').classList.add('hidden');
+      document.getElementById('roulette-screen').style.display = 'flex';
+    });
+
+    // Handle back button
+    document.getElementById('back-btn').addEventListener('click', () => {
+      document.getElementById('main-screen').style.display = 'flex';
+      document.getElementById('roulette-screen').style.display = 'none';
+    });
+
+    // Handle spin button (placeholder)
+    document.getElementById('spin-btn').addEventListener('click', () => {
+      alert('Раскрутка началась! (Функционал в разработке)');
+    });
+
+    // Duplicate prize track for seamless loop
+    const prizeTrack = document.querySelector('.prize-track');
+    const clone = prizeTrack.cloneNode(true);
+    prizeTrack.parentNode.appendChild(clone);
 
     // Telegram Web App integration
     if (window.Telegram?.WebApp) {
