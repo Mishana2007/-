@@ -149,6 +149,8 @@
       font-weight: bold;
       text-shadow: 0 0 10px #ff4444, 0 0 20px rgba(255, 255, 255, 0.9);
       z-index: 1;
+      text-align: center;
+      line-height: 1.2;
     }
     .profile-section {
       position: absolute;
@@ -245,16 +247,15 @@
       z-index: 10;
       display: none;
     }
-    .in-development {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      font-size: 2rem;
-      color: #ff4444;
-      text-shadow: 0 0 10px #ff0000, 0 0 20px rgba(255, 0, 0, 0.7);
+    .referrals-section {
       display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+      z-index: 10;
     }
     .roulette-screen {
       display: none;
@@ -395,9 +396,6 @@
         min-height: calc(100vh - 64px);
         padding-bottom: 64px;
       }
-      .in-development {
-        font-size: 1.5rem;
-      }
       .prize-container {
         height: 100px;
       }
@@ -470,8 +468,8 @@
       </button>
       <!-- Promotional Banner -->
       <div id="promo-banner" class="banner">
-        <img src="https://via.placeholder.com/800x360" alt="Promo Banner">
-        <div class="banner-text neon-text">NFT Roulette</div>
+        <img src="https://images.unsplash.com/photo-1614680376573-5452998d79b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=360&q=80" alt="Casino Promo">
+        <div class="banner-text neon-text">Крути рулетку! <br> Выиграй NFT и бонусы!</div>
       </div>
     </div>
     <!-- Bottom Navigation -->
@@ -548,7 +546,11 @@
       </table>
     </div>
   </div>
-  <!-- In Development Section -->
+  <!-- Referrals Section -->
+  <div id="referrals-section" class="referrals-section">
+    <div id="referrals-nav-bar" class="flex justify-around bg-[#000000] p-2 fixed bottom-0 left-0 right-0 z-10"></div>
+  </div>
+  <!-- Token Section -->
   <div id="token-section" class="hidden flex flex-col items-center justify-center min-h-screen">
     <div class="in-development">В разработке</div>
     <div id="token-nav-bar" class="flex justify-around bg-[#000000] p-2 fixed bottom-0 left-0 right-0 z-10"></div>
@@ -621,6 +623,7 @@
       document.getElementById('profile-section').style.display = 'block';
       document.getElementById('nav-bar').style.display = 'flex';
       document.getElementById('token-section').classList.add('hidden');
+      document.getElementById('referrals-section').style.display = 'none';
 
       // Get Telegram user data from initData
       const initData = window.Telegram?.WebApp.initData || '';
@@ -663,6 +666,7 @@
     document.getElementById('token-btn').addEventListener('click', () => {
       document.querySelector('.main-content').style.display = 'none';
       document.getElementById('profile-section').style.display = 'none';
+      document.getElementById('referrals-section').style.display = 'none';
       document.getElementById('token-section').classList.remove('hidden');
       const tokenNavBar = document.getElementById('token-nav-bar');
       tokenNavBar.innerHTML = document.getElementById('nav-bar').innerHTML;
@@ -676,9 +680,42 @@
           document.querySelector('.main-content').style.display = 'block';
           document.getElementById('profile-section').style.display = 'none';
           document.getElementById('token-section').classList.add('hidden');
+          document.getElementById('referrals-section').style.display = 'none';
           document.querySelector('.in-development').style.display = 'none';
           if (buttonId === 'profile-btn') {
             document.getElementById('profile-btn').click();
+          } else if (buttonId === 'roulette-btn') {
+            // No additional action needed, main screen is already shown
+          } else if (buttonId === 'referrals-btn') {
+            document.getElementById('referrals-btn').click();
+          }
+        });
+      });
+    });
+
+    // Handle referrals button click
+    document.getElementById('referrals-btn').addEventListener('click', () => {
+      document.querySelector('.main-content').style.display = 'none';
+      document.getElementById('profile-section').style.display = 'none';
+      document.getElementById('token-section').classList.add('hidden');
+      document.getElementById('roulette-screen').style.display = 'none';
+      document.getElementById('referrals-section').style.display = 'block';
+      const referralsNavBar = document.getElementById('referrals-nav-bar');
+      referralsNavBar.innerHTML = document.getElementById('nav-bar').innerHTML;
+
+      // Add event listeners to dynamically created buttons
+      const referralButtons = referralsNavBar.querySelectorAll('.nav-button');
+      referralButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          const buttonId = button.id;
+          document.querySelector('.main-content').style.display = 'block';
+          document.getElementById('profile-section').style.display = 'none';
+          document.getElementById('token-section').classList.add('hidden');
+          document.getElementById('referrals-section').style.display = 'none';
+          if (buttonId === 'profile-btn') {
+            document.getElementById('profile-btn').click();
+          } else if (buttonId === 'token-btn') {
+            document.getElementById('token-btn').click();
           } else if (buttonId === 'roulette-btn') {
             // No additional action needed, main screen is already shown
           }
@@ -686,14 +723,12 @@
       });
     });
 
-    // Handle back to main screen from other buttons
-    ['roulette-btn', 'referrals-btn'].forEach(id => {
-      document.getElementById(id).addEventListener('click', () => {
-        document.querySelector('.main-content').style.display = 'block';
-        document.getElementById('profile-section').style.display = 'none';
-        document.getElementById('token-section').classList.add('hidden');
-        document.querySelector('.in-development').style.display = 'none';
-      });
+    // Handle roulette button click
+    document.getElementById('roulette-btn').addEventListener('click', () => {
+      document.querySelector('.main-content').style.display = 'block';
+      document.getElementById('profile-section').style.display = 'none';
+      document.getElementById('token-section').classList.add('hidden');
+      document.getElementById('referrals-section').style.display = 'none';
     });
 
     // Handle top-up button
@@ -706,6 +741,7 @@
       document.getElementById('main-screen').style.display = 'none';
       document.getElementById('profile-section').style.display = 'none';
       document.getElementById('token-section').classList.add('hidden');
+      document.getElementById('referrals-section').style.display = 'none';
       document.getElementById('roulette-screen').style.display = 'flex';
     });
 
