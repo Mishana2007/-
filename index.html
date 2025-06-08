@@ -14,6 +14,7 @@
       margin: 0;
       height: 100vh;
       position: relative;
+      perspective: 1000px;
     }
     .slot-machine {
       display: flex;
@@ -91,7 +92,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin: 0 12px; /* Increased spacing */
+      margin: 0 12px;
       transition: all 0.3s;
       font-size: 1.5rem;
       color: #ffffff;
@@ -106,25 +107,38 @@
       margin-top: 4px;
     }
     .banner {
-      position: relative;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotateY(20deg);
       width: 75%;
       max-width: 400px;
       height: 180px;
-      background: linear-gradient(#333, #222);
+      background: linear-gradient(45deg, #222, #444);
       border-radius: 16px;
-      box-shadow: 0 0 40px rgba(255, 255, 255, 0.9), 0 0 60px rgba(255, 255, 255, 0.7);
+      box-shadow: 
+        0 10px 30px rgba(255, 255, 255, 0.2),
+        0 0 0 5px rgba(255, 255, 255, 0.1),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .banner:hover {
+      transform: translate(-50%, -50%) rotateY(30deg);
+      box-shadow: 
+        0 15px 40px rgba(255, 255, 255, 0.3),
+        0 0 0 7px rgba(255, 255, 255, 0.2),
+        inset 0 0 30px rgba(255, 255, 255, 0.4);
     }
     .banner img {
       width: calc(100% - 8px);
       height: calc(100% - 8px);
       object-fit: cover;
       opacity: 0.7;
-      border: 2px dashed #ffffff;
       border-radius: 12px;
       margin: 4px;
     }
@@ -132,47 +146,81 @@
       position: absolute;
       font-size: 2.5rem;
       font-weight: bold;
-      text-shadow: 0 0 10px #ff4444, 0 0 20px rgba(255, 255, 255, 0.9), 0 0 30px rgba(255, 255, 255, 0.9);
+      text-shadow: 0 0 10px #ff4444, 0 0 20px rgba(255, 255, 255, 0.9);
+      z-index: 1;
     }
     .profile-section {
       position: absolute;
-      top: 40%; /* Slightly above center */
+      top: 40%;
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
       display: none;
+      width: 80%;
+      max-width: 400px;
     }
-    .profile-section img {
+    .profile-header {
+      margin-bottom: 20px;
+    }
+    .profile-header img {
       width: 100px;
       height: 100px;
       border-radius: 50%;
       margin-bottom: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
-    .profile-section p {
+    .profile-header p {
       font-size: 1.2rem;
       text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
       margin: 5px 0;
     }
-    .leaders-balance {
-      position: absolute;
-      top: 70%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80%;
-      max-width: 400px;
-      height: 100px;
-      background: linear-gradient(#333, #222);
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
-      text-align: center;
-      padding: 10px;
+    .user-rank {
       font-size: 1.5rem;
-      color: #d3d3d3;
-      text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+      margin-bottom: 15px;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+    }
+    .user-rank.top-3 {
+      color: #ff4444;
+      text-shadow: 0 0 10px #ff4444, 0 0 20px rgba(255, 255, 255, 0.9);
+    }
+    .leaders-table {
+      width: 100%;
+      background: linear-gradient(135deg, #222, #444);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      height: 60vh;
+      overflow-y: auto;
+    }
+    .leaders-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .leaders-table th, .leaders-table td {
+      padding: 8px;
+      text-align: center;
+      font-size: 1rem;
+      text-shadow: 0 0 3px rgba(255, 255, 255, 0.6);
+    }
+    .leaders-table th {
+      background: linear-gradient(90deg, #333, #555);
+      border-bottom: 2px solid #ff4444;
+    }
+    .leaders-table td {
+      background: rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 68, 68, 0.3);
+    }
+    .user-row {
+      background: rgba(255, 215, 0, 0.2); /* Подсветка строки пользователя */
+      font-weight: bold;
+    }
+    .user-row.top-3 {
+      background: rgba(255, 68, 68, 0.3); /* Усиленная подсветка для топ-3 */
+      color: #ff4444;
     }
     .neon-line {
       position: absolute;
-      top: 60%;
+      top: 55%;
       left: 50%;
       transform: translateX(-50%);
       width: 80%;
@@ -223,6 +271,7 @@
       .banner {
         width: 85%;
         height: 135px;
+        max-width: 300px;
       }
       .banner-text {
         font-size: 1.8rem;
@@ -241,20 +290,22 @@
       .profile-section {
         top: 40%;
       }
-      .profile-section img {
+      .profile-header img {
         width: 80px;
         height: 80px;
       }
-      .profile-section p {
+      .profile-header p {
         font-size: 1rem;
       }
-      .leaders-balance {
-        top: 75%;
-        height: 80px;
+      .user-rank {
         font-size: 1.2rem;
       }
+      .leaders-table {
+        height: 50vh;
+        font-size: 0.9rem;
+      }
       .neon-line {
-        top: 65%;
+        top: 60%;
       }
       .main-content {
         min-height: calc(100vh - 64px);
@@ -313,7 +364,7 @@
         Пополнить ➕
       </button>
       <!-- Promotional Banner -->
-      <div class="banner mt-16">
+      <div class="banner">
         <img src="https://via.placeholder.com/400x180" alt="Promo Banner">
         <div class="banner-text neon-text">NFT Roulette</div>
       </div>
@@ -341,11 +392,56 @@
 
   <!-- Profile Section -->
   <div id="profile-section" class="profile-section">
-    <img id="profile-avatar" src="" alt="Avatar">
-    <p id="profile-username"></p>
-    <p id="profile-userid"></p>
+    <div class="profile-header">
+      <img id="profile-avatar" src="" alt="Avatar">
+      <p id="profile-username"></p>
+      <p id="profile-userid"></p>
+    </div>
+    <div class="user-rank" id="user-rank"></div>
     <div class="neon-line"></div>
-    <div class="leaders-balance">Баланс лидеров</div>
+    <div class="leaders-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Место</th>
+            <th>Ник</th>
+            <th>Кейсов</th>
+          </tr>
+        </thead>
+        <tbody id="leaders-list">
+          <tr><td>1</td><td>Player1</td><td>150</td></tr>
+          <tr><td>2</td><td>Player2</td><td>120</td></tr>
+          <tr><td>3</td><td>Player3</td><td>90</td></tr>
+          <tr><td>4</td><td>Player4</td><td>70</td></tr>
+          <tr><td>5</td><td>Player5</td><td>50</td></tr>
+          <tr><td>6</td><td>Player6</td><td>45</td></tr>
+          <tr><td>7</td><td>Player7</td><td>40</td></tr>
+          <tr><td>8</td><td>Player8</td><td>35</td></tr>
+          <tr><td>9</td><td>Player9</td><td>30</td></tr>
+          <tr><td>10</td><td>Player10</td><td>28</td></tr>
+          <tr><td>11</td><td>Player11</td><td>25</td></tr>
+          <tr><td>12</td><td>Player12</td><td>22</td></tr>
+          <tr><td>13</td><td>Player13</td><td>20</td></tr>
+          <tr><td>14</td><td>Player14</td><td>18</td></tr>
+          <tr><td>15</td><td>Player15</td><td>16</td></tr>
+          <tr><td>16</td><td>Player16</td><td>15</td></tr>
+          <tr><td>17</td><td>Player17</td><td>14</td></tr>
+          <tr><td>18</td><td>Player18</td><td>13</td></tr>
+          <tr><td>19</td><td>Player19</td><td>12</td></tr>
+          <tr><td>20</td><td>Player20</td><td>11</td></tr>
+          <tr><td>21</td><td>Player21</td><td>10</td></tr>
+          <tr><td>22</td><td>Player22</td><td>9</td></tr>
+          <tr><td>23</td><td>Player23</td><td>8</td></tr>
+          <tr><td>24</td><td>Player24</td><td>7</td></tr>
+          <tr><td>25</td><td>Player25</td><td>6</td></tr>
+          <tr><td>26</td><td>Player26</td><td>5</td></tr>
+          <tr><td>27</td><td>Player27</td><td>4</td></tr>
+          <tr><td>28</td><td>Player28</td><td>3</td></tr>
+          <tr><td>29</td><td>Player29</td><td>2</td></tr>
+          <tr><td>30</td><td>Player30</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <script>
@@ -401,6 +497,28 @@
         document.getElementById('profile-avatar').src = avatarUrl;
         document.getElementById('profile-username').textContent = username;
         document.getElementById('profile-userid').textContent = `ID: ${userId}`;
+
+        // Reset previous highlights
+        document.querySelectorAll('.user-row').forEach(row => row.classList.remove('user-row', 'top-3'));
+        document.getElementById('user-rank').classList.remove('top-3');
+        document.getElementById('user-rank').textContent = '';
+
+        // Mock user rank (replace with real data logic later)
+        const leadersList = document.getElementById('leaders-list').getElementsByTagName('tr');
+        let userRank = 'Вы на 36 месте'; // Default rank outside top-30
+        for (let i = 0; i < leadersList.length && i < 30; i++) {
+          const nick = leadersList[i].cells[1].textContent;
+          if (nick === username) {
+            userRank = `Вы на ${i + 1} месте`;
+            leadersList[i].classList.add('user-row');
+            if (i < 3) {
+              leadersList[i].classList.add('top-3');
+              document.getElementById('user-rank').classList.add('top-3');
+            }
+            break;
+          }
+        }
+        document.getElementById('user-rank').textContent = userRank;
       }
     });
 
@@ -409,6 +527,8 @@
       document.getElementById(id).addEventListener('click', () => {
         document.querySelector('.main-content').style.display = 'block';
         document.getElementById('profile-section').style.display = 'none';
+        document.querySelectorAll('.user-row').forEach(row => row.classList.remove('user-row', 'top-3'));
+        document.getElementById('user-rank').classList.remove('top-3');
       });
     });
 
