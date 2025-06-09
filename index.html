@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NFT Roulette</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -10,11 +10,11 @@
       font-family: 'Arial', sans-serif;
       background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
       color: #ffffff;
-      overflow: hidden;
       margin: 0;
       height: 100vh;
+      overflow: hidden;
       position: relative;
-      perspective: 1000px;
+      touch-action: manipulation; /* Prevents double-tap zoom */
     }
     .slot-machine {
       display: flex;
@@ -67,21 +67,40 @@
       50% { transform: translateX(-4px); }
     }
     .neon-text {
-      text-shadow: 0 0 5px #ff4444, 0 0 10px #ff4444, 0 0 20px rgba(255, 255, 255, 0.8);
+      text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px rgba(255, 255, 255, 0.8);
     }
     .neon-border {
       box-shadow: 0 0 10px #00ff00, 0 0 20px rgba(255, 255, 255, 0.8);
     }
+    .balance-display {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      font-size: 1.2rem;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      text-shadow: 0 0 3px rgba(255, 255, 255, 0.6);
+    }
     .top-up-btn {
-      background: linear-gradient(135deg, #1e90ff, #4169e1);
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: linear-gradient(135deg, #6b48ff, #a25aff);
       border-radius: 8px;
       padding: 8px 16px;
       font-size: 1rem;
+      color: #fff;
+      border: none;
+      cursor: pointer;
       transition: all 0.3s;
+      text-shadow: 0 0 5px rgba(107, 72, 255, 0.7);
     }
     .top-up-btn:hover {
-      background: linear-gradient(135deg, #4169e1, #1e90ff);
-      box-shadow: 0 0 15px rgba(30, 144, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.9);
+      background: linear-gradient(135deg, #a25aff, #6b48ff);
+      box-shadow: 0 0 15px rgba(107, 72, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.5);
     }
     .nav-button {
       width: 60px;
@@ -147,7 +166,7 @@
       position: absolute;
       font-size: 2.5rem;
       font-weight: bold;
-      text-shadow: 0 0 10px #ff4444, 0 0 20px rgba(255, 255, 255, 0.9);
+      text-shadow: 0 0 10px #ffffff, 0 0 20px rgba(255, 255, 255, 0.9);
       z-index: 1;
       text-align: center;
       line-height: 1.2;
@@ -159,8 +178,8 @@
       transform: translate(-50%, -50%);
       text-align: center;
       display: none;
-      width: 80%;
-      max-width: 400px;
+      width: 85%;
+      max-width: 450px;
     }
     .profile-header {
       margin-bottom: 20px;
@@ -181,8 +200,13 @@
     }
     .user-rank {
       font-size: 1.5rem;
-      margin-bottom: 15px;
+      margin: 10px 0;
       text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 5px 15px;
+      border: 2px solid #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
     }
     .user-rank.top-3 {
       color: #ff4444;
@@ -194,34 +218,54 @@
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.5);
       padding: 10px;
-      height: 60vh;
+      height: 50vh;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 90px; /* Space for nav bar */
     }
-    .leaders-table table {
-      width: 100%;
-      border-collapse: collapse;
+    .leader-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      border-radius: 20px;
+      transition: background 0.3s;
     }
-    .leaders-table th, .leaders-table td {
-      padding: 8px;
+    .leader-row:hover {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    }
+    .leader-row span {
+      flex: 1;
       text-align: center;
       font-size: 1rem;
       text-shadow: 0 0 3px rgba(255, 255, 255, 0.6);
     }
-    .leaders-table th {
-      background: linear-gradient(90deg, #333, #555);
-      border-bottom: 2px solid #ff4444;
+    .leader-row .rank {
+      width: 50px;
     }
-    .leaders-table td {
-      background: rgba(255, 255, 255, 0.1);
-      border-bottom: 1px solid rgba(255, 68, 68, 0.3);
+    .leader-row .username {
+      flex-grow: 2;
+      text-align: left;
+      padding-left: 10px;
+    }
+    .leader-row .points {
+      width: 100px;
+      text-align: right;
+      padding-right: 10px;
+    }
+    .leader-row .stars {
+      color: #ffd700;
     }
     .user-row {
-      background: rgba(255, 215, 0, 0.2);
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
       font-weight: bold;
     }
     .user-row.top-3 {
-      background: rgba(255, 68, 68, 0.3);
-      color: #ff4444;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+      color: #ffffff;
     }
     .neon-line {
       position: absolute;
@@ -231,13 +275,13 @@
       width: 80%;
       height: 2px;
       background: none;
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.3), 0 0 20px rgba(255, 0, 0, 0.2);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.2);
     }
     .main-content {
       width: 100%;
       min-height: calc(100vh - 80px);
       padding-bottom: 80px;
-      transition: all 0.3s ease;
+      transition: none; /* Removed transition to prevent shifting */
     }
     #nav-bar {
       position: fixed;
@@ -246,6 +290,9 @@
       right: 0;
       z-index: 10;
       display: none;
+      height: 80px;
+      background: #000000;
+      padding: 10px 0;
     }
     .referrals-section {
       display: none;
@@ -386,7 +433,14 @@
         font-size: 1.2rem;
       }
       .leaders-table {
-        height: 50vh;
+        height: 45vh;
+        font-size: 0.9rem;
+      }
+      .leader-row {
+        padding: 6px;
+        border-radius: 15px;
+      }
+      .leader-row span {
         font-size: 0.9rem;
       }
       .neon-line {
@@ -411,6 +465,14 @@
         padding: 8px 16px;
       }
       .back-btn {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+      }
+      .balance-display {
+        font-size: 1rem;
+        padding: 6px 10px;
+      }
+      .top-up-btn {
         font-size: 0.9rem;
         padding: 6px 12px;
       }
@@ -456,14 +518,14 @@
   </div>
 
   <!-- Main Screen -->
-  <div id="main-screen" class="hidden flex flex-col items-center w-full relative">
+  <div id="main-screen" class="flex flex-col items-center w-full relative" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;">
     <div class="main-content">
       <!-- Balance Display -->
-      <div class="absolute top-4 left-4 text-lg sm:text-xl neon-text balance">
+      <div class="balance-display">
         Баланс: 100 ⭐
       </div>
       <!-- Top Up Button -->
-      <button id="top-up-btn" class="absolute top-4 right-4 top-up-btn neon-border">
+      <button id="top-up-btn" class="top-up-btn neon-border">
         Пополнить ➕
       </button>
       <!-- Promotional Banner -->
@@ -499,51 +561,60 @@
       <img id="profile-avatar" src="" alt="Avatar">
       <p id="profile-username"></p>
       <p id="profile-userid"></p>
+      <div class="user-rank" id="user-rank"></div>
     </div>
-    <div class="user-rank" id="user-rank"></div>
     <div class="neon-line"></div>
-    <div class="leaders-table">
-      <table>
-        <thead>
-          <tr>
-            <th>Место</th>
-            <th>Ник</th>
-            <th>Кейсов</th>
-          </tr>
-        </thead>
-        <tbody id="leaders-list">
-          <tr><td>1</td><td>Player1</td><td>150</td></tr>
-          <tr><td>2</td><td>Player2</td><td>120</td></tr>
-          <tr><td>3</td><td>Player3</td><td>90</td></tr>
-          <tr><td>4</td><td>Player4</td><td>70</td></tr>
-          <tr><td>5</td><td>Player5</td><td>50</td></tr>
-          <tr><td>6</td><td>Player6</td><td>45</td></tr>
-          <tr><td>7</td><td>Player7</td><td>40</td></tr>
-          <tr><td>8</td><td>Player8</td><td>35</td></tr>
-          <tr><td>9</td><td>Player9</td><td>30</td></tr>
-          <tr><td>10</td><td>Player10</td><td>28</td></tr>
-          <tr><td>11</td><td>Player11</td><td>25</td></tr>
-          <tr><td>12</td><td>Player12</td><td>22</td></tr>
-          <tr><td>13</td><td>Player13</td><td>20</td></tr>
-          <tr><td>14</td><td>Player14</td><td>18</td></tr>
-          <tr><td>15</td><td>Player15</td><td>16</td></tr>
-          <tr><td>16</td><td>Player16</td><td>15</td></tr>
-          <tr><td>17</td><td>Player17</td><td>14</td></tr>
-          <tr><td>18</td><td>Player18</td><td>13</td></tr>
-          <tr><td>19</td><td>Player19</td><td>12</td></tr>
-          <tr><td>20</td><td>Player20</td><td>11</td></tr>
-          <tr><td>21</td><td>Player21</td><td>10</td></tr>
-          <tr><td>22</td><td>Player22</td><td>9</td></tr>
-          <tr><td>23</td><td>Player23</td><td>8</td></tr>
-          <tr><td>24</td><td>Player24</td><td>7</td></tr>
-          <tr><td>25</td><td>Player25</td><td>6</td></tr>
-          <tr><td>26</td><td>Player26</td><td>5</td></tr>
-          <tr><td>27</td><td>Player27</td><td>4</td></tr>
-          <tr><td>28</td><td>Player28</td><td>3</td></tr>
-          <tr><td>29</td><td>Player29</td><td>2</td></tr>
-          <tr><td>30</td><td>Player30</td><td>1</td></tr>
-        </tbody>
-      </table>
+    <div class="leaders-table" id="leaders-table">
+      <div class="leader-row">
+        <span class="rank">1</span>
+        <span class="username">Bigmabons</span>
+        <span class="points">71,150 <span class="stars">⭐</span></span>
+      </div>
+      <div class="leader-row">
+        <span class="rank">2</span>
+        <span class="username">ErOp</span>
+        <span class="points">43,550 <span class="stars">⭐</span></span>
+      </div>
+      <div class="leader-row">
+        <span class="rank">3</span>
+        <span class="username">AOZARYA</span>
+        <span class="points">43,225 <span class="stars">⭐</span></span>
+      </div>
+      <div class="leader-row">
+        <span class="rank">4</span>
+        <span class="username">GP_COMPANY</span>
+        <span class="points">33,375 <span class="stars">⭐</span></span>
+      </div>
+      <div class="leader-row">
+        <span class="rank">5</span>
+        <span class="username">Wh1spOt_34</span>
+        <span class="points">28,550 <span class="stars">⭐</span></span>
+      </div>
+      <div class="leader-row">
+        <span class="rank">6</span>
+        <span class="username">PlayerX</span>
+        <span class="points">25,300 <span class="stars">⭐</span></span>
+      </div>
+      <div class="leader-row">
+        <span class="rank">7</span>
+        <span class="username">ShadowKing</span>
+        <span class="points">22,150 <span class="stars">⭐</span></span>
+      </div>
+      <div class="leader-row">
+        <span class="rank">8</span>
+        <span class="username">CryptoNinja</span>
+        <span class="points">19,800 <span class="stars">⭐</span></span>
+      </div>
+      <div class="leader-row">
+        <span class="rank">9</span>
+        <span class="username">LuckyStar</span>
+        <span class="points">17,500 <span class="stars">⭐</span></span>
+      </div>
+      <div class="leader-row">
+        <span class="rank">10</span>
+        <span class="username">GoldRush</span>
+        <span class="points">15,200 <span class="stars">⭐</span></span>
+      </div>
     </div>
   </div>
   <!-- Referrals Section -->
@@ -618,7 +689,8 @@
     }, 4000);
 
     // Handle profile button click
-    document.getElementById('profile-btn').addEventListener('click', () => {
+    document.getElementById('profile-btn').addEventListener('click', (e) => {
+      e.preventDefault();
       document.querySelector('.main-content').style.display = 'none';
       document.getElementById('profile-section').style.display = 'block';
       document.getElementById('nav-bar').style.display = 'flex';
@@ -639,23 +711,21 @@
         document.getElementById('profile-userid').textContent = `ID: ${userId}`;
 
         // Reset previous highlights
-        document.querySelectorAll('.user-row').forEach(row => row.classList.remove('user-row', 'top-3'));
+        const leaderRows = document.querySelectorAll('.leader-row');
+        leaderRows.forEach(row => row.classList.remove('user-row', 'top-3'));
         document.getElementById('user-rank').classList.remove('top-3');
         document.getElementById('user-rank').textContent = '';
 
         // Mock user rank
-        const leadersList = document.getElementById('leaders-list').getElementsByTagName('tr');
         let userRank = 'Вы на 36 месте';
-        for (let i = 0; i < leadersList.length && i < 30; i++) {
-          const nick = leadersList[i].cells[1].textContent;
-          if (nick === username) {
-            userRank = `Вы на ${i + 1} месте`;
-            leadersList[i].classList.add('user-row');
-            if (i < 3) {
-              leadersList[i].classList.add('top-3');
-              document.getElementById('user-rank').classList.add('top-3');
-            }
-            break;
+        const usernames = Array.from(leaderRows).map(row => row.querySelector('.username').textContent);
+        const userIndex = usernames.indexOf(username);
+        if (userIndex !== -1) {
+          userRank = `Вы на ${userIndex + 1} месте`;
+          leaderRows[userIndex].classList.add('user-row');
+          if (userIndex < 3) {
+            leaderRows[userIndex].classList.add('top-3');
+            document.getElementById('user-rank').classList.add('top-3');
           }
         }
         document.getElementById('user-rank').textContent = userRank;
@@ -663,7 +733,8 @@
     });
 
     // Handle token button click
-    document.getElementById('token-btn').addEventListener('click', () => {
+    document.getElementById('token-btn').addEventListener('click', (e) => {
+      e.preventDefault();
       document.querySelector('.main-content').style.display = 'none';
       document.getElementById('profile-section').style.display = 'none';
       document.getElementById('referrals-section').style.display = 'none';
@@ -676,6 +747,7 @@
       const tokenButtons = tokenNavBar.querySelectorAll('.nav-button');
       tokenButtons.forEach(button => {
         button.addEventListener('click', (e) => {
+          e.preventDefault();
           const buttonId = button.id;
           document.querySelector('.main-content').style.display = 'block';
           document.getElementById('profile-section').style.display = 'none';
@@ -694,7 +766,8 @@
     });
 
     // Handle referrals button click
-    document.getElementById('referrals-btn').addEventListener('click', () => {
+    document.getElementById('referrals-btn').addEventListener('click', (e) => {
+      e.preventDefault();
       document.querySelector('.main-content').style.display = 'none';
       document.getElementById('profile-section').style.display = 'none';
       document.getElementById('token-section').classList.add('hidden');
@@ -707,6 +780,7 @@
       const referralButtons = referralsNavBar.querySelectorAll('.nav-button');
       referralButtons.forEach(button => {
         button.addEventListener('click', (e) => {
+          e.preventDefault();
           const buttonId = button.id;
           document.querySelector('.main-content').style.display = 'block';
           document.getElementById('profile-section').style.display = 'none';
@@ -724,7 +798,8 @@
     });
 
     // Handle roulette button click
-    document.getElementById('roulette-btn').addEventListener('click', () => {
+    document.getElementById('roulette-btn').addEventListener('click', (e) => {
+      e.preventDefault();
       document.querySelector('.main-content').style.display = 'block';
       document.getElementById('profile-section').style.display = 'none';
       document.getElementById('token-section').classList.add('hidden');
@@ -732,12 +807,14 @@
     });
 
     // Handle top-up button
-    document.getElementById('top-up-btn').addEventListener('click', () => {
+    document.getElementById('top-up-btn').addEventListener('click', (e) => {
+      e.preventDefault();
       alert('Пополнение баланса');
     });
 
     // Handle banner click to show roulette screen
-    document.getElementById('promo-banner').addEventListener('click', () => {
+    document.getElementById('promo-banner').addEventListener('click', (e) => {
+      e.preventDefault();
       document.getElementById('main-screen').style.display = 'none';
       document.getElementById('profile-section').style.display = 'none';
       document.getElementById('token-section').classList.add('hidden');
@@ -746,13 +823,15 @@
     });
 
     // Handle back button
-    document.getElementById('back-btn').addEventListener('click', () => {
+    document.getElementById('back-btn').addEventListener('click', (e) => {
+      e.preventDefault();
       document.getElementById('main-screen').style.display = 'flex';
       document.getElementById('roulette-screen').style.display = 'none';
     });
 
     // Handle spin button (placeholder)
-    document.getElementById('spin-btn').addEventListener('click', () => {
+    document.getElementById('spin-btn').addEventListener('click', (e) => {
+      e.preventDefault();
       alert('Раскрутка началась! (Функционал в разработке)');
     });
 
