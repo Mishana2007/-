@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NFT Roulette</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -10,11 +10,11 @@
       font-family: 'Arial', sans-serif;
       background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
       color: #ffffff;
+      overflow: hidden;
       margin: 0;
       height: 100vh;
-      overflow: hidden;
       position: relative;
-      touch-action: manipulation; /* Prevents double-tap zoom */
+      perspective: 1000px;
     }
     .slot-machine {
       display: flex;
@@ -72,35 +72,16 @@
     .neon-border {
       box-shadow: 0 0 10px #00ff00, 0 0 20px rgba(255, 255, 255, 0.8);
     }
-    .balance-display {
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      font-size: 1.2rem;
-      padding: 8px 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-      text-shadow: 0 0 3px rgba(255, 255, 255, 0.6);
-    }
     .top-up-btn {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-      background: linear-gradient(135deg, #6b48ff, #a25aff);
+      background: linear-gradient(135deg, #1e90ff, #4169e1);
       border-radius: 8px;
       padding: 8px 16px;
       font-size: 1rem;
-      color: #fff;
-      border: none;
-      cursor: pointer;
       transition: all 0.3s;
-      text-shadow: 0 0 5px rgba(107, 72, 255, 0.7);
     }
     .top-up-btn:hover {
-      background: linear-gradient(135deg, #a25aff, #6b48ff);
-      box-shadow: 0 0 15px rgba(107, 72, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.5);
+      background: linear-gradient(135deg, #4169e1, #1e90ff);
+      box-shadow: 0 0 15px rgba(30, 144, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.9);
     }
     .nav-button {
       width: 60px;
@@ -281,7 +262,7 @@
       width: 100%;
       min-height: calc(100vh - 80px);
       padding-bottom: 80px;
-      transition: none; /* Removed transition to prevent shifting */
+      transition: all 0.3s ease;
     }
     #nav-bar {
       position: fixed;
@@ -468,14 +449,6 @@
         font-size: 0.9rem;
         padding: 6px 12px;
       }
-      .balance-display {
-        font-size: 1rem;
-        padding: 6px 10px;
-      }
-      .top-up-btn {
-        font-size: 0.9rem;
-        padding: 6px 12px;
-      }
     }
   </style>
 </head>
@@ -518,14 +491,14 @@
   </div>
 
   <!-- Main Screen -->
-  <div id="main-screen" class="flex flex-col items-center w-full relative" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;">
+  <div id="main-screen" class="hidden flex flex-col items-center w-full relative">
     <div class="main-content">
       <!-- Balance Display -->
-      <div class="balance-display">
+      <div class="absolute top-4 left-4 text-lg sm:text-xl neon-text balance">
         Баланс: 100 ⭐
       </div>
       <!-- Top Up Button -->
-      <button id="top-up-btn" class="top-up-btn neon-border">
+      <button id="top-up-btn" class="absolute top-4 right-4 top-up-btn neon-border">
         Пополнить ➕
       </button>
       <!-- Promotional Banner -->
@@ -689,8 +662,7 @@
     }, 4000);
 
     // Handle profile button click
-    document.getElementById('profile-btn').addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('profile-btn').addEventListener('click', () => {
       document.querySelector('.main-content').style.display = 'none';
       document.getElementById('profile-section').style.display = 'block';
       document.getElementById('nav-bar').style.display = 'flex';
@@ -733,8 +705,7 @@
     });
 
     // Handle token button click
-    document.getElementById('token-btn').addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('token-btn').addEventListener('click', () => {
       document.querySelector('.main-content').style.display = 'none';
       document.getElementById('profile-section').style.display = 'none';
       document.getElementById('referrals-section').style.display = 'none';
@@ -747,7 +718,6 @@
       const tokenButtons = tokenNavBar.querySelectorAll('.nav-button');
       tokenButtons.forEach(button => {
         button.addEventListener('click', (e) => {
-          e.preventDefault();
           const buttonId = button.id;
           document.querySelector('.main-content').style.display = 'block';
           document.getElementById('profile-section').style.display = 'none';
@@ -766,8 +736,7 @@
     });
 
     // Handle referrals button click
-    document.getElementById('referrals-btn').addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('referrals-btn').addEventListener('click', () => {
       document.querySelector('.main-content').style.display = 'none';
       document.getElementById('profile-section').style.display = 'none';
       document.getElementById('token-section').classList.add('hidden');
@@ -780,7 +749,6 @@
       const referralButtons = referralsNavBar.querySelectorAll('.nav-button');
       referralButtons.forEach(button => {
         button.addEventListener('click', (e) => {
-          e.preventDefault();
           const buttonId = button.id;
           document.querySelector('.main-content').style.display = 'block';
           document.getElementById('profile-section').style.display = 'none';
@@ -798,8 +766,7 @@
     });
 
     // Handle roulette button click
-    document.getElementById('roulette-btn').addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('roulette-btn').addEventListener('click', () => {
       document.querySelector('.main-content').style.display = 'block';
       document.getElementById('profile-section').style.display = 'none';
       document.getElementById('token-section').classList.add('hidden');
@@ -807,14 +774,12 @@
     });
 
     // Handle top-up button
-    document.getElementById('top-up-btn').addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('top-up-btn').addEventListener('click', () => {
       alert('Пополнение баланса');
     });
 
     // Handle banner click to show roulette screen
-    document.getElementById('promo-banner').addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('promo-banner').addEventListener('click', () => {
       document.getElementById('main-screen').style.display = 'none';
       document.getElementById('profile-section').style.display = 'none';
       document.getElementById('token-section').classList.add('hidden');
@@ -823,15 +788,13 @@
     });
 
     // Handle back button
-    document.getElementById('back-btn').addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('back-btn').addEventListener('click', () => {
       document.getElementById('main-screen').style.display = 'flex';
       document.getElementById('roulette-screen').style.display = 'none';
     });
 
     // Handle spin button (placeholder)
-    document.getElementById('spin-btn').addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('spin-btn').addEventListener('click', () => {
       alert('Раскрутка началась! (Функционал в разработке)');
     });
 
