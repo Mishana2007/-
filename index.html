@@ -10,7 +10,7 @@
       font-family: 'Arial', sans-serif;
       background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
       color: #ffffff;
-      overflow: hidden;
+      overflow-x: hidden;
       margin: 0;
       height: 100vh;
       position: relative;
@@ -204,7 +204,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-bottom: 90px; /* Space for nav bar */
+      margin-bottom: 90px;
     }
     .leader-row {
       display: flex;
@@ -270,7 +270,7 @@
       left: 0;
       right: 0;
       z-index: 10;
-      display: none;
+      display: flex;
       height: 80px;
       background: #000000;
       padding: 10px 0;
@@ -359,6 +359,12 @@
     .back-btn:hover {
       background: linear-gradient(135deg, #cc0000, #990000);
       box-shadow: 0 0 20px rgba(255, 68, 68, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
+    }
+    .in-development {
+      font-size: 2rem;
+      text-align: center;
+      margin-top: 40vh;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
     }
     @media (max-width: 640px) {
       .reel {
@@ -449,6 +455,9 @@
         font-size: 0.9rem;
         padding: 6px 12px;
       }
+      .in-development {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
@@ -509,7 +518,7 @@
     </div>
     <!-- Bottom Navigation -->
     <div id="nav-bar" class="flex justify-around bg-[#000000] p-2">
-      <button id="roulette-btn" class="nav-button">
+      <button id="roulette-btn" class="nav-button active">
         <span class="emoji">🎰</span>
         <span class="label">Рулетка</span>
       </button>
@@ -590,36 +599,34 @@
       </div>
     </div>
   </div>
+
   <!-- Referrals Section -->
   <div id="referrals-section" class="referrals-section">
+    <div class="in-development">Реферальная система<br>в разработке</div>
     <div id="referrals-nav-bar" class="flex justify-around bg-[#000000] p-2 fixed bottom-0 left-0 right-0 z-10"></div>
   </div>
+
   <!-- Token Section -->
   <div id="token-section" class="hidden flex flex-col items-center justify-center min-h-screen">
-    <div class="in-development">В разработке</div>
+    <div class="in-development">Токен-экономика<br>в разработке</div>
     <div id="token-nav-bar" class="flex justify-around bg-[#000000] p-2 fixed bottom-0 left-0 right-0 z-10"></div>
   </div>
+
   <!-- Roulette Screen -->
   <div id="roulette-screen" class="roulette-screen">
     <button id="back-btn" class="back-btn">Назад</button>
     <div class="prize-container">
       <div class="prize-track">
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
-        <div class="prize"></div>
+        <div class="prize">NFT #1</div>
+        <div class="prize">100 ⭐</div>
+        <div class="prize">NFT #2</div>
+        <div class="prize">50 ⭐</div>
+        <div class="prize">NFT #3</div>
+        <div class="prize">200 ⭐</div>
+        <div class="prize">NFT #4</div>
+        <div class="prize">150 ⭐</div>
+        <div class="prize">NFT #5</div>
+        <div class="prize">75 ⭐</div>
       </div>
     </div>
     <button id="spin-btn" class="spin-btn">Раскрутить бесплатно</button>
@@ -661,13 +668,24 @@
       document.getElementById('nav-bar').style.display = 'flex';
     }, 4000);
 
+    // Function to update active button state
+    function updateActiveButton(activeId) {
+      document.querySelectorAll('.nav-button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      if (activeId) {
+        document.getElementById(activeId).classList.add('active');
+      }
+    }
+
     // Handle profile button click
     document.getElementById('profile-btn').addEventListener('click', () => {
       document.querySelector('.main-content').style.display = 'none';
       document.getElementById('profile-section').style.display = 'block';
-      document.getElementById('nav-bar').style.display = 'flex';
       document.getElementById('token-section').classList.add('hidden');
       document.getElementById('referrals-section').style.display = 'none';
+      document.getElementById('roulette-screen').style.display = 'none';
+      updateActiveButton('profile-btn');
 
       // Get Telegram user data from initData
       const initData = window.Telegram?.WebApp.initData || '';
@@ -709,25 +727,21 @@
       document.querySelector('.main-content').style.display = 'none';
       document.getElementById('profile-section').style.display = 'none';
       document.getElementById('referrals-section').style.display = 'none';
+      document.getElementById('roulette-screen').style.display = 'none';
       document.getElementById('token-section').classList.remove('hidden');
+      updateActiveButton('token-btn');
+
       const tokenNavBar = document.getElementById('token-nav-bar');
       tokenNavBar.innerHTML = document.getElementById('nav-bar').innerHTML;
-      document.querySelector('.in-development').style.display = 'block';
-
+      
       // Add event listeners to dynamically created buttons
-      const tokenButtons = tokenNavBar.querySelectorAll('.nav-button');
-      tokenButtons.forEach(button => {
+      tokenNavBar.querySelectorAll('.nav-button').forEach(button => {
         button.addEventListener('click', (e) => {
           const buttonId = button.id;
-          document.querySelector('.main-content').style.display = 'block';
-          document.getElementById('profile-section').style.display = 'none';
-          document.getElementById('token-section').classList.add('hidden');
-          document.getElementById('referrals-section').style.display = 'none';
-          document.querySelector('.in-development').style.display = 'none';
           if (buttonId === 'profile-btn') {
             document.getElementById('profile-btn').click();
           } else if (buttonId === 'roulette-btn') {
-            // No additional action needed, main screen is already shown
+            document.getElementById('roulette-btn').click();
           } else if (buttonId === 'referrals-btn') {
             document.getElementById('referrals-btn').click();
           }
@@ -742,24 +756,21 @@
       document.getElementById('token-section').classList.add('hidden');
       document.getElementById('roulette-screen').style.display = 'none';
       document.getElementById('referrals-section').style.display = 'block';
+      updateActiveButton('referrals-btn');
+
       const referralsNavBar = document.getElementById('referrals-nav-bar');
       referralsNavBar.innerHTML = document.getElementById('nav-bar').innerHTML;
 
       // Add event listeners to dynamically created buttons
-      const referralButtons = referralsNavBar.querySelectorAll('.nav-button');
-      referralButtons.forEach(button => {
+      referralsNavBar.querySelectorAll('.nav-button').forEach(button => {
         button.addEventListener('click', (e) => {
           const buttonId = button.id;
-          document.querySelector('.main-content').style.display = 'block';
-          document.getElementById('profile-section').style.display = 'none';
-          document.getElementById('token-section').classList.add('hidden');
-          document.getElementById('referrals-section').style.display = 'none';
           if (buttonId === 'profile-btn') {
             document.getElementById('profile-btn').click();
           } else if (buttonId === 'token-btn') {
             document.getElementById('token-btn').click();
           } else if (buttonId === 'roulette-btn') {
-            // No additional action needed, main screen is already shown
+            document.getElementById('roulette-btn').click();
           }
         });
       });
@@ -771,6 +782,8 @@
       document.getElementById('profile-section').style.display = 'none';
       document.getElementById('token-section').classList.add('hidden');
       document.getElementById('referrals-section').style.display = 'none';
+      document.getElementById('roulette-screen').style.display = 'none';
+      updateActiveButton('roulette-btn');
     });
 
     // Handle top-up button
@@ -785,12 +798,14 @@
       document.getElementById('token-section').classList.add('hidden');
       document.getElementById('referrals-section').style.display = 'none';
       document.getElementById('roulette-screen').style.display = 'flex';
+      updateActiveButton();
     });
 
     // Handle back button
     document.getElementById('back-btn').addEventListener('click', () => {
       document.getElementById('main-screen').style.display = 'flex';
       document.getElementById('roulette-screen').style.display = 'none';
+      updateActiveButton('roulette-btn');
     });
 
     // Handle spin button (placeholder)
